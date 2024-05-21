@@ -5,10 +5,10 @@ import { io } from "socket.io-client";
 import ImageCropper from "../../components/imageCropper/ImageCropper";
 
 let imagePlaceHolder = "https://via.placeholder.com/150";
-const UploadProductImages = () => {
-  const socket = useMemo(() => io(process.env.REACT_APP_Back_end_api_root, { transports: ["websocket"] }), []); /* auth can be provided */
 
+const UploadProductImages = () => {
   const storeID = useParams().storeID;
+  const socket = useMemo(() => io(process.env.REACT_APP_Back_end_api_root, { transports: ["websocket"] }), [storeID]); /* auth can be provided */
 
   const [imageUrlStage, setImageUrlStage] = useState(null);
   const [images, setImages] = useState([]); // array of image urls for src
@@ -17,7 +17,7 @@ const UploadProductImages = () => {
   const [showSuccess, setShowSuccess] = useState(false);
   useEffect(() => {
     socket.on("connect", () => {
-      console.log(socket.id); // x8WIv7-mJelg7on_ALbx
+      // x8WIv7-mJelg7on_ALbx
       socket.emit("createRoom", storeID);
     });
     socket.on("newImagesFromPhone", () => {
@@ -30,13 +30,13 @@ const UploadProductImages = () => {
     });
 
     return () => {
-      socket.disconnect();
+      /* socket.disconnect(); */
     };
   }, []);
 
   const handleImageUpload = (e) => {
     const image = e.target.files[0];
-    console.log(image);
+
     if (image) {
       console.log("image");
       const reader = new FileReader();
@@ -59,12 +59,6 @@ const UploadProductImages = () => {
       console.log(error);
     }
   };
-
-  /*   const closeWindow = () => {
-    /*  socket.disconnect(); */
-
-  /*    window.close();
-  }; */
 
   return (
     <>
