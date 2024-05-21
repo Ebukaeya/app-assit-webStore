@@ -1,0 +1,79 @@
+.uploadImag777 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
+}
+
+.containerDivSep2 {
+  padding-top: 10vh;
+  width: 96%;
+  max-width: 400px;
+  height: 96vh;
+  background-color: white;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.selectImageDiv {
+  width: 90%;
+  height: 200px;
+  border: 1px dashed #a0a0a0;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  gap: 12px;
+}
+
+#fileImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.placeholderimage32 {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 60px;
+}
+.placeholderimage32 > img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+.primaryBtn {
+  width: 90%;
+  height: 50px;
+  background-color: #0e49b5;
+  border-radius: 40px;
+  border: none;
+  color: white;
+  font-size: 0.9rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin-top: 70px;
+  font-family: "nunito", sans-serif;
+}
+
+.primaryBtnDisabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}

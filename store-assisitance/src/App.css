@@ -1,3 +1,23 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;500;600;800&family=Nunito:wght@200;300;400;500;600;700;800&family=Old+Standard+TT:wght@700&family=Open+Sans:wght@300&family=Orbitron:wght@500;600;700&family=Poppins:wght@200;300;400;500;600&display=swap");
 
 /* Rest of your CSS code goes here */
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: "Nunito", sans-serif;
+  background-color: #f3f5f7;
+  box-sizing: border-box;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  padding: 0;
+  margin: 0;
+}
