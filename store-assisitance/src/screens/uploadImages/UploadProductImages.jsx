@@ -55,6 +55,7 @@ const UploadProductImages = () => {
       socket.emit("sendImagesFromPhone", { storeID, imagesBuffer: imageBuffer, imageUrl: images });
     } catch (error) {
       console.log(error);
+      alert(error);
     }
   };
 
