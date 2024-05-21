@@ -7,7 +7,9 @@ import ImageCropper from "../../components/imageCropper/ImageCropper";
 let imagePlaceHolder = "https://via.placeholder.com/150";
 const UploadProductImages = () => {
   const socket = useMemo(() => io(process.env.REACT_APP_Back_end_api_root, { transports: ["websocket"] }), []); /* auth can be provided */
-  const storeID = /* useParams() */ "664b27164a77e91bbb5b7e36";
+
+  const storeID = useParams().storeID;
+
   const [imageUrlStage, setImageUrlStage] = useState(null);
   const [images, setImages] = useState([]); // array of image urls for src
   const [imageBuffer, setImageBuffer] = useState([]); // image buffer for sending to server
