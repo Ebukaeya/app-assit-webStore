@@ -12,6 +12,7 @@ const UploadProductImages = () => {
   const [images, setImages] = useState([]); // array of image urls for src
   const [imageBuffer, setImageBuffer] = useState([]); // image buffer for sending to server
   const [openImageCropper, setOpenImageCropper] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
   useEffect(() => {
     socket.on("connect", () => {
       console.log(socket.id); // x8WIv7-mJelg7on_ALbx
@@ -23,6 +24,7 @@ const UploadProductImages = () => {
       setImageBuffer([]);
       setImages([]);
       setImageUrlStage(null);
+      setShowSuccess(true);
     });
 
     return () => {
@@ -55,29 +57,52 @@ const UploadProductImages = () => {
       console.log(error);
     }
   };
-  console.log(images.length > 0);
+
+  /*   const closeWindow = () => {
+    /*  socket.disconnect(); */
+
+  /*    window.close();
+  }; */
+
   return (
     <>
       <div className='uploadImag777'>
         <div className='containerDivSep2'>
-          <div className='placeholderimage32'>
-            <img src={!images.length == 0 ? images[0] : imagePlaceHolder} />
-            <img src={images.length > 1 ? images[1] : imagePlaceHolder} />
-            <img src={images.length > 2 ? images[2] : imagePlaceHolder} />
-            <img src={images.length > 3 ? images[3] : imagePlaceHolder} />
-          </div>
-          <div className='selectImageDiv'>
-            <img src='https://res.cloudinary.com/ebuka1122/image/upload/v1716276006/ihub-store-images/Group_2579_a3pmps.png' />
-            <p>Upload images</p>
-
-            <input onChange={(e) => handleImageUpload(e)} type='file' id='fileImage' accept='image/*' />
-          </div>
-          {images.length > 0 ? (
-            <button onClick={sendImages} className='primaryBtn '>
-              Send images
-            </button>
+          {showSuccess ? (
+            <div className='imagesSentSucess'>
+              <img
+                src='https://res.cloudinary.com/ebuka1122/image/upload/v1716276941/ihub-store-images/NoPath_-_Copy_e0glss.png'
+                alt='success'
+                className='successImage'
+              />
+              <p>Images sent successfully</p>
+              {/*  <button onClick={closeWindow} className='primaryBtn'>
+                {" "}
+                Close window{" "}
+              </button> */}
+            </div>
           ) : (
-            <button className='primaryBtn  primaryBtnDisabled'>Send images</button>
+            <>
+              <div className='placeholderimage32'>
+                <img src={!images.length == 0 ? images[0] : imagePlaceHolder} />
+                <img src={images.length > 1 ? images[1] : imagePlaceHolder} />
+                <img src={images.length > 2 ? images[2] : imagePlaceHolder} />
+                <img src={images.length > 3 ? images[3] : imagePlaceHolder} />
+              </div>
+              <div className='selectImageDiv'>
+                <img src='https://res.cloudinary.com/ebuka1122/image/upload/v1716276006/ihub-store-images/Group_2579_a3pmps.png' />
+                <p>Upload images</p>
+
+                <input onChange={(e) => handleImageUpload(e)} type='file' id='fileImage' accept='image/*' />
+              </div>
+              {images.length > 0 ? (
+                <button onClick={sendImages} className='primaryBtn '>
+                  Send images
+                </button>
+              ) : (
+                <button className='primaryBtn  primaryBtnDisabled'>Send images</button>
+              )}
+            </>
           )}
         </div>
       </div>
