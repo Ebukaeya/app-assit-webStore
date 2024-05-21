@@ -29,9 +29,7 @@ const UploadProductImages = () => {
       setShowSuccess(true);
     });
 
-    return () => {
-      /* socket.disconnect(); */
-    };
+    return () => {};
   }, []);
 
   const handleImageUpload = (e) => {
