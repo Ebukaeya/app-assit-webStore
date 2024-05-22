@@ -26,12 +26,14 @@ const UploadProductImages = () => {
   const [imageBuffer, setImageBuffer] = useState([]); // image buffer for sending to server
   const [openImageCropper, setOpenImageCropper] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     socket.on("connect", () => {
       // x8WIv7-mJelg7on_ALbx
       socket.emit("createRoom", storeID);
     });
     socket.on("newImagesFromPhone", () => {
+      setIsLoading(false);
       console.log("new images received");
       alert("images received successfully");
       setImageBuffer([]);
@@ -62,7 +64,7 @@ const UploadProductImages = () => {
   };
 
   const sendImages = async (e) => {
-    console.log("send images");
+    setIsLoading(true);
     e.preventDefault();
     try {
       socket.emit("sendImagesFromPhone", { storeID, imagesBuffer: imageBuffer, imageUrl: images });
@@ -104,9 +106,13 @@ const UploadProductImages = () => {
                 <input onChange={(e) => handleImageUpload(e)} type='file' id='fileImage' accept='image/*' />
               </div>
               {images.length > 0 ? (
-                <button onClick={(e) => sendImages(e)} className='primaryBtn '>
-                  Send images
-                </button>
+                isLoading ? (
+                  <button className='primaryBtn primaryBtnDisabled'>Sending images...</button>
+                ) : (
+                  <button onClick={(e) => sendImages(e)} className='primaryBtn '>
+                    Send images
+                  </button>
+                )
               ) : (
                 <button className='primaryBtn  primaryBtnDisabled'>Send images</button>
               )}
