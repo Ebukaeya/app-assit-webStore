@@ -49,8 +49,9 @@ const UploadProductImages = () => {
     }
   };
 
-  const sendImages = async () => {
+  const sendImages = async (e) => {
     console.log("send images");
+    e.preventDefault();
     try {
       socket.emit("sendImagesFromPhone", { storeID, imagesBuffer: imageBuffer, imageUrl: images });
     } catch (error) {
@@ -91,7 +92,7 @@ const UploadProductImages = () => {
                 <input onChange={(e) => handleImageUpload(e)} type='file' id='fileImage' accept='image/*' />
               </div>
               {images.length > 0 ? (
-                <button onClick={sendImages} className='primaryBtn '>
+                <button onClick={(e) => sendImages(e)} className='primaryBtn '>
                   Send images
                 </button>
               ) : (
