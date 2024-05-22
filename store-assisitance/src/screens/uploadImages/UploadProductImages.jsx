@@ -8,7 +8,18 @@ let imagePlaceHolder = "https://via.placeholder.com/150";
 
 const UploadProductImages = () => {
   const storeID = useParams().storeID;
-  const socket = useMemo(() => io(process.env.REACT_APP_Back_end_api_root, { transports: ["websocket"] }), [storeID]); /* auth can be provided */
+  const socket = useMemo(
+    () =>
+      io(process.env.REACT_APP_Back_end_api_root, {
+        transports: ["websocket"],
+        reconnection: true, // Enable automatic reconnection
+        reconnectionAttempts: Infinity, // Number of reconnection attempts (-1 for infinite)
+        reconnectionDelay: 1000, // Initial delay before attempting reconnection (milliseconds)
+        reconnectionDelayMax: 5000, // Maximum delay between reconnection attempts (milliseconds)
+        timeout: 20000, // Connection timeout (milliseconds)
+      }),
+    [storeID]
+  ); /* auth can be provided */
 
   const [imageUrlStage, setImageUrlStage] = useState(null);
   const [images, setImages] = useState([]); // array of image urls for src
@@ -43,6 +54,7 @@ const UploadProductImages = () => {
         setOpenImageCropper(true);
       };
       reader.readAsDataURL(image);
+      console.log("image", image.size, image.type, image.name);
     } else {
       console.log("Please select an image");
       alert("Please select an image");
@@ -92,9 +104,9 @@ const UploadProductImages = () => {
                 <input onChange={(e) => handleImageUpload(e)} type='file' id='fileImage' accept='image/*' />
               </div>
               {images.length > 0 ? (
-                <div onClick={(e) => sendImages(e)} className='primaryBtn '>
+                <button onClick={(e) => sendImages(e)} className='primaryBtn '>
                   Send images
-                </div>
+                </button>
               ) : (
                 <button className='primaryBtn  primaryBtnDisabled'>Send images</button>
               )}
