@@ -46,6 +46,11 @@ const UploadProductImages = () => {
   }, []);
 
   const handleImageUpload = (e) => {
+    if (images.length >= 4) {
+      alert("You can only upload 4 images");
+      return;
+    }
+
     const image = e.target.files[0];
 
     if (image) {
