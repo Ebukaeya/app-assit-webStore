@@ -92,9 +92,9 @@ const UploadProductImages = () => {
                 <input onChange={(e) => handleImageUpload(e)} type='file' id='fileImage' accept='image/*' />
               </div>
               {images.length > 0 ? (
-                <button onClick={(e) => sendImages(e)} className='primaryBtn '>
+                <div onClick={(e) => sendImages(e)} className='primaryBtn '>
                   Send images
-                </button>
+                </div>
               ) : (
                 <button className='primaryBtn  primaryBtnDisabled'>Send images</button>
               )}
