@@ -53,56 +53,9 @@ const UploadProductImages = () => {
     }
 
     const image = e.target.files[0];
-    console.log("orginal imagge", image instanceof Blob, image.size, image.type, image.name);
-
-    /* compress image before proceeding if size is bigger than 1 mb */
-
-    const options = {
-      maxSizeMB: 1,
-      maxWidthOrHeight: 1920,
-      useWebWorker: true,
-    };
-
+    console.log("image size", image.size);
     if (image.size > 1000000) {
-      /* compress image */
-
-      let compressedImage = await imageCompression(image, options);
-
-      console.log("compressed image", compressedImage instanceof Blob, compressedImage.size, compressedImage.type, compressedImage.name);
-
-      if (compressedImage) {
-        const reader = new FileReader();
-        reader.onload = function (evt) {
-          setImageUrlStage(evt.target.result);
-          setOpenImageCropper(true);
-        };
-        reader.readAsDataURL(compressedImage);
-        console.log("compressed image", compressedImage.size, compressedImage.type, compressedImage.name);
-      } else {
-        alert("Image compression failed");
-      }
-    } else {
-      if (image) {
-        console.log("image");
-        const reader = new FileReader();
-        reader.onload = function (evt) {
-          setImageUrlStage(evt.target.result);
-          setOpenImageCropper(true);
-        };
-        reader.readAsDataURL(image);
-        console.log("image", image.size, image.type, image.name);
-      } else {
-        console.log("Please select an image");
-        alert("Please select an image");
-      }
-    }
-  };
-
-  const sendImages = async (e) => {
-    setIsLoading(true);
-    e.preventDefault();
-    /* further compress before sending */
-    let compressedImageBuffers = await imageBuffer.map(async (image) => {
+      /* compress */
       const options = {
         maxSizeMB: 1,
         maxWidthOrHeight: 1920,
@@ -110,12 +63,55 @@ const UploadProductImages = () => {
       };
 
       let compressedImage = await imageCompression(image, options);
+
+      console.log("compressedImage", compressedImage.size);
+
+      const reader = new FileReader();
+      reader.onload = function (evt) {
+        setImageUrlStage(evt.target.result);
+        setOpenImageCropper(true);
+      };
+      reader.readAsDataURL(compressedImage);
+      return;
+    } else {
+      if (image) {
+        console.log("image is less than 1mb");
+        const reader = new FileReader();
+        reader.onload = function (evt) {
+          setImageUrlStage(evt.target.result);
+          setOpenImageCropper(true);
+        };
+        reader.readAsDataURL(image);
+      } else {
+        alert("Please select an image");
+      }
+    }
+  };
+
+  const compressPayLoadBeforeSending = async (imageBlob) => {
+    const options = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 1920,
+      useWebWorker: true,
+    };
+    let compressedImageBuffersPre = imageBlob.map(async (image) => {
+      let compressedImage = await imageCompression(image, options);
       return compressedImage;
     });
-    console.log((await compressedImageBuffers[0]).size);
+    let compressedImageBuffers = await Promise.all(compressedImageBuffersPre);
+
+    return compressedImageBuffers;
+  };
+
+  const sendImages = async (e) => {
+    setIsLoading(true);
+    e.preventDefault();
+    /* further compress before sending */
+    let compressedImageBuffers = await compressPayLoadBeforeSending(imageBuffer);
+
+    console.log("compressedImageBuffers", compressedImageBuffers[0].size);
     try {
-      socket.emit("sendImagesFromPhone", { storeID, imagesBuffer: compressedImageBuffers });
-      /* socket.emit("sendImagesFromPhone", { storeID, imagesBuffer: compressedImageBuffers, imageUrl: images }); */
+      socket.emit("sendImagesFromPhone", { storeID, imagesBuffer: compressedImageBuffers, imageUrl: images });
     } catch (error) {
       console.log(error);
       alert(error);

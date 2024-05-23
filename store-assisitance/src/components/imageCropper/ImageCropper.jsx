@@ -22,14 +22,14 @@ const ImageCropper = ({
   const cropperRef = createRef(null);
 
   const grabCroppedImage = () => {
-    console.log("grabbing cropped image", readImageUrl);
+    console.log("grabbing cropped image");
 
     setIsCropping(true);
     if (typeof cropperRef.current?.cropper !== "undefined") {
       if (isMultipleImage) {
         console.log("multiple image");
         setCroppedImageUrl((prev) => [...prev, cropperRef.current.cropper.getCroppedCanvas().toDataURL()]);
-        console.log("imageUrl size cropped", cropperRef.current.cropper.getCroppedCanvas().toDataURL());
+
         cropperRef.current.cropper.getCroppedCanvas().toBlob(
           (blob) => {
             setCroppedImageBolb((prev) => [...prev, blob]);
