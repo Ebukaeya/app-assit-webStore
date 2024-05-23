@@ -2,8 +2,18 @@ import logo from "./logo.svg";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import UploadProductImages from "./screens/uploadImages/UploadProductImages";
+import { useEffect } from "react";
 
 function App() {
+  const updateViewPort = () => {
+    let viewport = window.innerHeight;
+    document.documentElement.style.setProperty("--vh", `${viewport}px`);
+    console.log(viewport);
+  };
+
+  useEffect(() => {
+    updateViewPort();
+  }, []);
   return (
     <BrowserRouter>
       <Routes>
