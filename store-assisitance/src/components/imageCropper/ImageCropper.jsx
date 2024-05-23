@@ -22,17 +22,21 @@ const ImageCropper = ({
   const cropperRef = createRef(null);
 
   const grabCroppedImage = () => {
+    console.log("grabbing cropped image", readImageUrl);
+
     setIsCropping(true);
     if (typeof cropperRef.current?.cropper !== "undefined") {
       if (isMultipleImage) {
         console.log("multiple image");
         setCroppedImageUrl((prev) => [...prev, cropperRef.current.cropper.getCroppedCanvas().toDataURL()]);
+        console.log("imageUrl size cropped", cropperRef.current.cropper.getCroppedCanvas().toDataURL());
         cropperRef.current.cropper.getCroppedCanvas().toBlob(
           (blob) => {
             setCroppedImageBolb((prev) => [...prev, blob]);
+            console.log("blob size cropped", blob.size);
           },
           "image/jpeg",
-          1
+          0.9
         );
       } else {
         setCroppedImageUrl(cropperRef.current.cropper.getCroppedCanvas().toDataURL());
