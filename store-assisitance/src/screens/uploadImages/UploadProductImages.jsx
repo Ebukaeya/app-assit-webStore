@@ -110,6 +110,7 @@ const UploadProductImages = () => {
     let compressedImageBuffers = await compressPayLoadBeforeSending(imageBuffer);
 
     console.log("compressedImageBuffers", compressedImageBuffers[0].size);
+    console.log("imageUrls", images);
     try {
       socket.emit("sendImagesFromPhone", { storeID, imagesBuffer: compressedImageBuffers, imageUrl: images });
     } catch (error) {
